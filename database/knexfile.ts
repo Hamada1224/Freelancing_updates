@@ -1,9 +1,13 @@
 import type { Knex } from "knex";
-import { config } from "dotenv"
+import { config as dotenv } from "dotenv"
 import {join} from "path"
-config({
+
+dotenv({
 	path : join(__dirname,'../','.env')
 })
+
+
+
 // Update with your config settings.
 
 const config: { [key: string]: Knex.Config } = {
