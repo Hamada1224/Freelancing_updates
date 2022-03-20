@@ -9,7 +9,7 @@ class DB {
 
     private config = config.development 
     private db = knex(this.config)
-    private userID : Number ;
+    private userID? : Number ;
 
     // users 
 
@@ -42,27 +42,34 @@ class DB {
         return this ;
     }
 
+    public deleteUser = async () => {
+        
+        const beforeDelete = (await this.db('users').count('*'))[0].count ;
+        await this.db('users').where({"user_id" : this.userID }).delete()
+        const afterDelete = (await this.db('users').count('*'))[0].count
+
+        return afterDelete !== beforeDelete
+    }
 
     // tags
+
     public getTags = async () => {
 
         
-        const dbResult: string = (await this.db('users').where({"user_id" : this.userID}))[0].tags
-        if(JSON.parse(dbResult).length == 0 ) return []
-        return JSON.parse(dbResult)
+        const dbResult: any = (await this.db('users').where({"user_id" : this.userID}))[0].tags
+        
+        if( dbResult == null || dbResult.length == 0 ) return []
+        return JSON.parse(dbResult).map((x:String) => x.replace(',',''))
     }
 
     public addTags = async (tag : any) => {
         
-        let currentTags = await this.getTags()
+        let currentTags :any [] = await this.getTags()
         let updatedTags :any[]
         
         
-        
-        if (tag.includes(',')) updatedTags = [...currentTags ,  ...tag.split(',')]
-        else currentTags.push(`${tag},`) ; updatedTags = currentTags
-        // console.log(updatedTags);
-        
+        if (tag.includes(',')) {updatedTags = [...currentTags ,  ...tag.split(',') ]    }
+        else                   {currentTags.push(`${tag},`) ; updatedTags = currentTags }
         
         try {
             
@@ -71,15 +78,24 @@ class DB {
             return this
         } catch (e) {
             throw e
-        }
+        
         
     }
-
+}
     public deleteAllTages = async () => {
+        
         
         await this.db('users').where({"user_id" : this.userID}).update({"tags" : null});
         return this
         
+    }
+
+    public deleteTag = async (tag : string) => {
+        let tags : string[] = await this.getTags()
+        let updatedTags = tags.filter(x => (x !== tag) )
+
+        await this.db('users').where({"user_id" : this.userID}).update({"tags" : JSON.stringify(updatedTags)})
+        return this
     }
 }
 
