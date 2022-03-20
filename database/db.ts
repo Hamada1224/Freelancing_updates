@@ -3,13 +3,14 @@ import config from "./knexfile"
 
 class DB {
     
-    constructor (id : Number) {
+    constructor (id : number ) {
         this.userID = id
     }
 
-    private config = config.development 
+    private env :any = process.env.env
+    private config = config[this.env] 
     private db = knex(this.config)
-    private userID? : Number ;
+    private userID? : number ;
 
     // users 
 

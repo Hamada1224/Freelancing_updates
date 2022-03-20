@@ -1,3 +1,3 @@
-import DB from "./database/db";
+import bot from "./Bot/bot";
 
-   
+bot()
