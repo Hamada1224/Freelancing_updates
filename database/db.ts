@@ -14,8 +14,9 @@ class DB {
 
     // users 
 
-    private checkId = async () => {
+    public checkId = async () => {
         const user = await this.db('users').where({"user_id" : this.userID})
+        
         return user.length > 0  ;
     }
     
@@ -52,6 +53,14 @@ class DB {
         return afterDelete !== beforeDelete
     }
 
+    public getUser = async () => {
+        const check = await this.checkId()
+        if(!check) return null
+        else {
+            return (await this.db('users').where({"user_id" : this.userID}))[0]
+        }
+    }
+
     // tags
 
     public getTags = async () => {
@@ -70,7 +79,7 @@ class DB {
         
         
         if (tag.includes(',')) {updatedTags = [...currentTags ,  ...tag.split(',') ]    }
-        else                   {currentTags.push(`${tag},`) ; updatedTags = currentTags }
+        else                   {currentTags.push(`${tag}`) ; updatedTags = currentTags }
         
         try {
             
@@ -98,6 +107,63 @@ class DB {
         await this.db('users').where({"user_id" : this.userID}).update({"tags" : JSON.stringify(updatedTags)})
         return this
     }
+
+    public changeTagStatus = async (newStatus : boolean) => {
+        const result = await this.db('users').where({"user_id" : this.userID}).update({"send_tags_status" : newStatus })
+        
+        return result == 1
+        
+    }
+
+    //Cached Text 
+    public addCacheText = async (text:string) => {
+        const result = await this.db('users').where({"user_id":this.userID}).update({"cached_text":text})
+        
+        return result == 1 
+        
+    }
+    public removeCachedTags = async () => {
+        try {
+            const result = await this.db('users').where({"user_id" : this.userID}).update({"cached_text" : ""})
+            return result == 1
+        } catch (e) {
+            throw e
+        }
+        
+    }
+    private getCachedTags = async () => {
+        try {
+            const result = await this.db('users').where({"user_id":this.userID})
+            return result[0].cached_text.trim()
+        } catch (e) {
+            throw e
+        }
+        
+    }
+    public saveCachedTags   = async () => {
+        try {
+            const cachedTags    = await this.getCachedTags()
+            const currentTags   = await this.getTags()
+            
+            
+            
+            //  saveTags      
+            // only if cached tags are not null
+            if(cachedTags.trim().length > 0 ) await this.addTags(cachedTags)
+            
+            
+            //  changeTagStatus  
+            await this.changeTagStatus(false)
+            
+            
+            await this.removeCachedTags()
+            return 1
+        
+        } catch (e) {
+            throw e
+        }
+        
+    } 
 }
 
 export default DB

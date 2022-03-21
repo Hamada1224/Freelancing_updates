@@ -19,13 +19,12 @@ const config: { [key: string]: Knex.Config } = {
       password: process.env.password
     }
   },
-
   staging: {
-    client: "postgresql",
+    client: process.env.driver,
     connection: {
-      database: "my_db",
-      user: "username",
-      password: "password"
+      database: process.env.database,
+      user: process.env.username,
+      password: process.env.password
     },
     pool: {
       min: 2,
@@ -35,22 +34,22 @@ const config: { [key: string]: Knex.Config } = {
       tableName: "knex_migrations"
     }
   },
-
   production: {
-    client: "postgresql",
+    client: process.env.driver,
     connection: {
-      database: "my_db",
-      user: "username",
-      password: "password"
+      database: process.env.database,
+      user: process.env.username,
+      password: process.env.password
     },
-    pool: {
+  pool: {
       min: 2,
       max: 10
     },
-    migrations: {
+  migrations: {
       tableName: "knex_migrations"
     }
-  }
+  },
+
 
 };
 

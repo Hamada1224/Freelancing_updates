@@ -3,8 +3,11 @@ import Providers from "./Providers/Provider";
 
 class Scrapper {
 
+    constructor(tags :[] ) {
+        this.filter = new Filter(tags)
+    }
     private providers = Providers ;
-    private filter = new Filter(['تصميم'])
+    private filter : Filter
     
     private unFilteredProjects = async () => {
         return Promise.all(

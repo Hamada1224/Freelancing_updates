@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Cheerio , CheerioAPI, CheerioOptions, Element, load } from "cheerio";
-
+import Project from "../../classes/project";
+import {config as dotenv} from "dotenv"
 
 
 class Khamsat  {
@@ -8,7 +9,7 @@ class Khamsat  {
     private domainName     = 'https://khamsat.com';
     private productionUrl  = 'https://khamsat.com/community/requests';
     private developmentUrl = 'http://localhost/khamsat.txt'
-    private activeUrl = this.developmentUrl
+    private activeUrl      = ((process.env.env as string) == 'development') ? this.developmentUrl : this.productionUrl ; 
     
 
     private fetch = async () => {
@@ -35,10 +36,7 @@ class Khamsat  {
          const projectText  = _.children[0].data
          const projectLink  = _.attribs.href
         
-         return {
-            text : projectText ,
-            link : this.domainName + projectLink
-        }
+         return new Project(this.domainName + projectLink , projectText)
 }
     
 
