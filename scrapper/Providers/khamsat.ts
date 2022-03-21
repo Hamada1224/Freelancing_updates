@@ -1,7 +1,6 @@
 import axios from "axios";
-import { Cheerio , CheerioAPI, CheerioOptions, Element, load } from "cheerio";
+import { load } from "cheerio";
 import Project from "../../classes/project";
-import {config as dotenv} from "dotenv"
 
 
 class Khamsat  {

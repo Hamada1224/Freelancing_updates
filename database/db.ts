@@ -1,5 +1,4 @@
 import knex from "knex";
-import config from "./knexfile"
 
 class DB {
     
@@ -7,9 +6,15 @@ class DB {
         this.userID = id
     }
 
-    private env :any = process.env.env
-    private config = config[this.env] 
-    private db = knex(this.config)
+    private db = knex({
+        "client" : process.env.driver,
+        
+        "connection" : {
+            "database" : process.env.database,
+            "user" : process.env.username,
+            "password" : process.env.password
+        }
+    })
     private userID? : number ;
 
     // users 

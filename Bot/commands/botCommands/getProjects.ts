@@ -15,17 +15,24 @@ class GetProjects {
 
     public static command = 'get_projects'
 
-    public run = async () => {
-        const tags = await this.db.getTags()
-        const scrapper = new Scrapper(tags)
 
-        const projects = await scrapper.projects()
+    public run = async (command :string) => {
 
-        projects.forEach((project : Project) => {
-            this.ctx.reply(`<a href="${project.link}">${project.text}</>`,{
-                "parse_mode" : "HTML"
+        if (command == GetProjects.command) {
+            
+            const tags = await this.db.getTags()
+            const scrapper = new Scrapper(tags)
+
+            const projects = await scrapper.projects()
+
+            projects.forEach((project : Project) => {
+                this.ctx.reply(`<a href="${project.link}">${project.text}</>`,{
+                    "parse_mode" : "HTML"
+                })
             })
-        })
+        }
+
+        
 
     }
 
