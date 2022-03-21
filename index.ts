@@ -13,7 +13,7 @@ const commands = Commands.getCommands().map(x => '/'+x)
 
 console.log('The Bot is Up');
     
-dotenv({path : join(__dirname,'.env')})
+dotenv({})
 
 const env         = process.env.env
 const token       = process.env.token || ''

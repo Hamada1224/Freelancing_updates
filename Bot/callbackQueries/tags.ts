@@ -23,6 +23,9 @@ const finishTags = async ( ctx :Context,db :DB) => {
 
 const cancelTags = async (ctx :Context , db :DB) => {
     await db.changeTagStatus(false)
+    
+    
+    
     ctx.deleteMessage()
     ctx.reply('Tag Change Cancled')
 }

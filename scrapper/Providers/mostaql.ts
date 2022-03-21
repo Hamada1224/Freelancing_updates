@@ -4,9 +4,7 @@ import { config as dotenv } from "dotenv";
 import { join } from "path";
 import Project from "../../classes/project";
 
-dotenv({
-    "path" : join(__dirname,'../../','.env')
-})
+dotenv({})
 
 class Mostaql {
     private productionUrl  = 'https://mostaql.com/projects/development';

@@ -1,5 +1,4 @@
 import { Context } from "telegraf";
-import { Message } from "telegraf/typings/core/types/typegram";
 import DB from "../../../database/db";
 
 const text = async (ctx:Context) => {

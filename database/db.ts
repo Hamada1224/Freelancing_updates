@@ -1,18 +1,20 @@
 import knex from "knex";
+import { join } from "path/posix";
 
 class DB {
     
     constructor (id : number ) {
         this.userID = id
+        this.db.migrate.latest({
+            "directory" : join(__dirname,'database','migrations')
+        })
     }
 
     private db = knex({
         "client" : process.env.driver,
         
         "connection" : {
-            "database" : process.env.database,
-            "user" : process.env.username,
-            "password" : process.env.password
+            uri : process.env.DATABASE_URL
         }
     })
     private userID? : number ;

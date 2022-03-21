@@ -3,9 +3,7 @@
 const dotenv = require('dotenv');
 const {join} = require('path');
 
-dotenv.config({
-  "path" : join(__dirname,'.env')
-})
+dotenv.config({})
 
 console.log(process.env.driver);
 /**
@@ -16,14 +14,10 @@ const config = {
   development: {
     client: process.env.driver,
     connection: {
-      database: process.env.database,
-      user:     process.env.username,
-      password: process.env.password
+      "uri" : process.env.DATABASE_URL
+      
     },
-    pool: {
-      min: 2,
-      max: 10
-    },
+    
     migrations: {
       tableName: 'knex_migrations',
       "directory" : join(__dirname,'database','migrations')
@@ -33,14 +27,9 @@ const config = {
   staging: {
     client: process.env.driver,
     connection: {
-      database: process.env.database,
-      user:     process.env.username,
-      password: process.env.password
+      "uri" : process.env.DATABASE_URL
     },
-    pool: {
-      min: 2,
-      max: 10
-    },
+    
     migrations: {
       tableName: 'knex_migrations',
       "directory" : join(__dirname,'database','migrations')
@@ -50,14 +39,9 @@ const config = {
   production: {
     client: process.env.driver,
     connection: {
-      database: process.env.database,
-      user:     process.env.username,
-      password: process.env.password
+      "uri" : process.env.DATABASE_URL
     },
-    pool: {
-      min: 2,
-      max: 10
-    },
+    
     migrations: {
       tableName: 'knex_migrations',
       "directory" : join(__dirname,'database','migrations')

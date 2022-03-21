@@ -6,6 +6,7 @@ const start = async (ctx : Context) => {
     
     try {
         let db = new DB(Number(ctx.from?.id))
+        
         const userExistsnce = await db.checkId()
         
         if (userExistsnce) return await  ctx.reply(`Welcome Back ${ctx.from?.first_name} ${ctx.from?.last_name || ''}`)
