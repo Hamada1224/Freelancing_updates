@@ -18,7 +18,7 @@ dotenv({path : join(__dirname,'.env')})
 const env         = process.env.env
 const token       = process.env.token || ''
 const url         = process.env.url   || 'localhost'
-const port        = (process.env.port as any)  ||  3000
+const port        = (process.env.PORT as any)  ||  3000
 
 const bot         = new Telegraf(token)
 
